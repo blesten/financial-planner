@@ -1,3 +1,4 @@
+import 'package:financial_planner/screens/register/register.dart';
 import 'package:financial_planner/utils/constants.dart';
 import 'package:financial_planner/widgets/general/reusable_text.dart';
 import 'package:financial_planner/widgets/welcome/carousel.dart';
@@ -26,7 +27,18 @@ class Welcome extends StatelessWidget {
                     backgroundColor: kPrimary,
                     side: BorderSide.none,
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.of(context).pushReplacement(
+                      PageRouteBuilder(
+                        pageBuilder: (_, __, ___) => const Register(),
+                        transitionDuration: const Duration(milliseconds: 100),
+                        transitionsBuilder: (_, animation, __, child) {
+                          return FadeTransition(
+                              opacity: animation, child: child);
+                        },
+                      ),
+                    );
+                  },
                   child: ReusableText(
                     text: 'Create Account',
                     color: Colors.white,
