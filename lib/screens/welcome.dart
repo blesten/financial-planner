@@ -4,6 +4,7 @@ import 'package:financial_planner/widgets/general/reusable_text.dart';
 import 'package:financial_planner/widgets/welcome/carousel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 
 class Welcome extends StatelessWidget {
   const Welcome({super.key});
@@ -28,15 +29,10 @@ class Welcome extends StatelessWidget {
                     side: BorderSide.none,
                   ),
                   onPressed: () {
-                    Navigator.of(context).pushReplacement(
-                      PageRouteBuilder(
-                        pageBuilder: (_, __, ___) => const Register(),
-                        transitionDuration: const Duration(milliseconds: 100),
-                        transitionsBuilder: (_, animation, __, child) {
-                          return FadeTransition(
-                              opacity: animation, child: child);
-                        },
-                      ),
+                    Get.to(
+                      () => Register(),
+                      transition: Transition.fadeIn,
+                      duration: const Duration(milliseconds: 500),
                     );
                   },
                   child: ReusableText(

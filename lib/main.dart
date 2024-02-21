@@ -1,6 +1,7 @@
-import 'package:financial_planner/screens/landing.dart';
+import 'package:financial_planner/screens/entry_point.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 
 void main() {
   runApp(
@@ -9,13 +10,13 @@ void main() {
       minTextAdapt: true,
       splitScreenMode: true,
       builder: (_, child) {
-        return MaterialApp(
+        return GetMaterialApp(
           debugShowCheckedModeBanner: false,
           title: 'Budget Buddy',
           home: child,
         );
       },
-      child: const Landing(),
+      child: const EntryPoint(),
     ),
   );
 }

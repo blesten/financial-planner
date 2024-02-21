@@ -19,23 +19,13 @@ class FourthStepRegistration extends StatelessWidget {
           child: Column(
             children: [
               Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  GestureDetector(
-                    onTap: () {},
-                    child: const Icon(CupertinoIcons.back),
-                  ),
-                  Expanded(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        ReusableText(
-                          text: 'Step 4/4',
-                          fontSize: 16.sp,
-                          color: kPrimary,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ],
-                    ),
+                  ReusableText(
+                    text: 'Step 4/4',
+                    fontSize: 16.sp,
+                    color: kPrimary,
+                    fontWeight: FontWeight.w600,
                   ),
                 ],
               ),
