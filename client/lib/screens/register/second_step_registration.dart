@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:financial_planner/controllers/register_controller.dart';
 import 'package:financial_planner/screens/register/first_step_registration.dart';
 import 'package:financial_planner/screens/register/third_step_registration.dart';
@@ -33,6 +34,44 @@ class _SecondStepRegistrationState extends State<SecondStepRegistration> {
   String _error = "";
   bool _isLoading = false;
 
+  late Timer _timer;
+  int _countdown = 30;
+
+  void startTimer() {
+    const oneSec = Duration(seconds: 1);
+    _timer = Timer.periodic(oneSec, (timer) {
+      setState(() {
+        if (_countdown == 0) {
+          timer.cancel();
+        } else {
+          _countdown--;
+        }
+      });
+    });
+  }
+
+  Future<void> sendOtp(String handphoneNo) async {
+    setState(() {
+      _error = "";
+    });
+
+    try {
+      var url = '$serverURL/api/v1/users/checkHandphoneNo/$handphoneNo';
+
+      var response = await http.get(Uri.parse(url));
+
+      if (response.statusCode != 200) {
+        setState(() {
+          _error = json.decode(response.body)['msg'];
+        });
+      }
+    } catch (err) {
+      setState(() {
+        _error = err.toString();
+      });
+    }
+  }
+
   Future<void> verifyOtp(String handphoneNo, int code) async {
     setState(() {
       _isLoading = true;
@@ -64,6 +103,8 @@ class _SecondStepRegistrationState extends State<SecondStepRegistration> {
   @override
   void initState() {
     super.initState();
+    startTimer();
+
     _firstDigitController.addListener(_onTextChanged);
     _secondDigitController.addListener(_onTextChanged);
     _thirdDigitController.addListener(_onTextChanged);
@@ -180,7 +221,8 @@ class _SecondStepRegistrationState extends State<SecondStepRegistration> {
                       ),
                       SizedBox(height: 9.h),
                       ReusableText(
-                        text: "+62 812 3456 7890",
+                        text:
+                            "+62 ${_registerStepController.phoneNumber.substring(0, 3)} ${_registerStepController.phoneNumber.substring(3, 7)} ${_registerStepController.phoneNumber.substring(7)}",
                         fontSize: 14.sp,
                         color: Colors.grey.shade500,
                         fontWeight: FontWeight.w500,
@@ -394,8 +436,21 @@ class _SecondStepRegistrationState extends State<SecondStepRegistration> {
                         height: 20.h,
                       ),
                       GestureDetector(
+                        // when _countdown is 0, then onTap is not null, but when it was clicked, it should reset to 30 again
+                        onTap: _countdown != 0
+                            ? null
+                            : () async {
+                                await sendOtp(
+                                    _registerStepController.phoneNumber);
+                                setState(() {
+                                  _countdown = 30;
+                                  startTimer();
+                                });
+                              },
                         child: ReusableText(
-                          text: "Resend code in 0:30",
+                          text: _countdown != 0
+                              ? "Resend code in 0:$_countdown"
+                              : "Resend code",
                           fontSize: 14.sp,
                           color: kPrimary,
                           fontWeight: FontWeight.w600,

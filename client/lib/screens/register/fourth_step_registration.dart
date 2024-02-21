@@ -1,11 +1,24 @@
+import 'package:financial_planner/controllers/register_controller.dart';
+import 'package:financial_planner/screens/login/login.dart';
 import 'package:financial_planner/utils/constants.dart';
 import 'package:financial_planner/widgets/general/reusable_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class FourthStepRegistration extends StatelessWidget {
-  const FourthStepRegistration({super.key});
+  final _registerStepController = Get.find<RegisterController>();
+
+  FourthStepRegistration({super.key});
+
+  Future<void> _completeRegistration() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString(
+        "budget_buddy_no", _registerStepController.phoneNumber);
+    await prefs.setBool("budget_buddy_is_registered_status", true);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -69,7 +82,16 @@ class FourthStepRegistration extends StatelessWidget {
                         backgroundColor: kPrimary,
                         side: BorderSide.none,
                       ),
-                      onPressed: () {},
+                      onPressed: () async {
+                        _completeRegistration();
+                        Get.to(
+                          () => const Login(),
+                          transition: Transition.fadeIn,
+                          duration: const Duration(
+                            milliseconds: 500,
+                          ),
+                        );
+                      },
                       child: ReusableText(
                         text: 'Start Now',
                         color: Colors.white,

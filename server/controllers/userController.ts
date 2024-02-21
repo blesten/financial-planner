@@ -2,6 +2,7 @@ import { Request, Response } from 'express'
 import { isValidHandphoneNo } from '../utils/validator'
 import { sendVerificationCode, verifyVerificationCode } from '../utils/verification'
 import bcrypt from 'bcrypt'
+import jwt from 'jsonwebtoken'
 import User from '../models/User'
 
 const userController = {
@@ -46,8 +47,6 @@ const userController = {
     try {
       const { handphoneNo, pin } = req.body
 
-      console.log(handphoneNo, pin)
-  
       if (!isValidHandphoneNo(`+62${handphoneNo}`))
         return res.status(400).json({ msg: 'Please provide valid handphone no' })
   
@@ -64,6 +63,31 @@ const userController = {
       await user.save()
   
       return res.status(200).json({ msg: 'User has been registered sucecssfully' })
+    } catch (error: any) {
+      return res.status(500).json({ msg: error.message })
+    }
+  },
+  login: async(req: Request, res: Response) => {
+    try {
+      const { handphoneNo, pin } = req.body
+
+      const user = await User.findOne({ handphoneNo: `+62${handphoneNo}` })
+      if (!user)
+        return res.status(401).json({ msg: 'Invalid credential' })
+
+      const isPwMatch = await bcrypt.compare(pin, user.pin)
+      if (!isPwMatch)
+        return res.status(401).json({ msg: 'Invalid credential' })
+
+      const accessToken = jwt.sign({ id: user._id }, `${process.env.ACCESS_TOKEN_SECRET}`, { expiresIn: '21d' })
+
+      return res.status(200).json({
+        accessToken,
+        user: {
+          ...user._doc,
+          pin: ''
+        }
+      })
     } catch (error: any) {
       return res.status(500).json({ msg: error.message })
     }

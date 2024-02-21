@@ -13,7 +13,7 @@ class Register extends StatelessWidget {
     const FirstStepRegistration(),
     const SecondStepRegistration(),
     const ThirdStepRegistration(),
-    const FourthStepRegistration(),
+    FourthStepRegistration(),
   ];
 
   Register({super.key});

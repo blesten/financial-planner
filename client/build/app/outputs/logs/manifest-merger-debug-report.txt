@@ -17,6 +17,7 @@ INJECTED from D:\SWE Interview Preparation Portfolio\flutter\financial_planner\c
 INJECTED from D:\SWE Interview Preparation Portfolio\flutter\financial_planner\client\android\app\src\main\AndroidManifest.xml:1:1-33:12
 INJECTED from D:\SWE Interview Preparation Portfolio\flutter\financial_planner\client\android\app\src\main\AndroidManifest.xml:1:1-33:12
 MERGED from D:\SWE Interview Preparation Portfolio\flutter\financial_planner\client\android\app\src\main\AndroidManifest.xml:1:1-33:12
+MERGED from [:shared_preferences_android] D:\SWE Interview Preparation Portfolio\flutter\financial_planner\client\build\shared_preferences_android\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-9:12
 MERGED from [:path_provider_android] D:\SWE Interview Preparation Portfolio\flutter\financial_planner\client\build\path_provider_android\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-9:12
 MERGED from [androidx.window:window-java:1.0.0-beta04] C:\Users\User\.gradle\caches\transforms-3\79d1204a7cbc4f2f7f993f1666237dca\transformed\jetified-window-java-1.0.0-beta04\AndroidManifest.xml:17:1-23:12
 MERGED from [androidx.window:window:1.0.0-beta04] C:\Users\User\.gradle\caches\transforms-3\d943c78a6995a024f7a7534709dfc0f7\transformed\jetified-window-1.0.0-beta04\AndroidManifest.xml:17:1-33:12
@@ -56,6 +57,8 @@ uses-sdk
 INJECTED from D:\SWE Interview Preparation Portfolio\flutter\financial_planner\client\android\app\src\main\AndroidManifest.xml reason: use-sdk injection requested
 INJECTED from D:\SWE Interview Preparation Portfolio\flutter\financial_planner\client\android\app\src\main\AndroidManifest.xml
 INJECTED from D:\SWE Interview Preparation Portfolio\flutter\financial_planner\client\android\app\src\main\AndroidManifest.xml
+MERGED from [:shared_preferences_android] D:\SWE Interview Preparation Portfolio\flutter\financial_planner\client\build\shared_preferences_android\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-7:41
+MERGED from [:shared_preferences_android] D:\SWE Interview Preparation Portfolio\flutter\financial_planner\client\build\shared_preferences_android\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-7:41
 MERGED from [:path_provider_android] D:\SWE Interview Preparation Portfolio\flutter\financial_planner\client\build\path_provider_android\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-7:41
 MERGED from [:path_provider_android] D:\SWE Interview Preparation Portfolio\flutter\financial_planner\client\build\path_provider_android\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-7:41
 MERGED from [androidx.window:window-java:1.0.0-beta04] C:\Users\User\.gradle\caches\transforms-3\79d1204a7cbc4f2f7f993f1666237dca\transformed\jetified-window-java-1.0.0-beta04\AndroidManifest.xml:19:5-21:41

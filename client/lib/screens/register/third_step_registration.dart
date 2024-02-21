@@ -40,7 +40,7 @@ class _ThirdStepRegistrationState extends State<ThirdStepRegistration> {
     });
 
     try {
-      var url = '$serverURL/api/v1/users';
+      var url = '$serverURL/api/v1/users/register';
 
       var response = await http.post(
         Uri.parse(url),
@@ -195,6 +195,7 @@ class _ThirdStepRegistrationState extends State<ThirdStepRegistration> {
                                 child: TextField(
                                   controller: _firstDigitController,
                                   focusNode: _firstDigitFocusNode,
+                                  obscureText: true,
                                   maxLength: 1,
                                   style: GoogleFonts.montserrat(
                                     color: Colors.black,
@@ -226,6 +227,7 @@ class _ThirdStepRegistrationState extends State<ThirdStepRegistration> {
                                 child: TextField(
                                   controller: _secondDigitController,
                                   focusNode: _secondDigitFocusNode,
+                                  obscureText: true,
                                   maxLength: 1,
                                   style: GoogleFonts.montserrat(
                                     color: Colors.black,
@@ -257,6 +259,7 @@ class _ThirdStepRegistrationState extends State<ThirdStepRegistration> {
                                 child: TextField(
                                   controller: _thirdDigitController,
                                   focusNode: _thirdDigitFocusNode,
+                                  obscureText: true,
                                   maxLength: 1,
                                   style: GoogleFonts.montserrat(
                                     color: Colors.black,
@@ -288,6 +291,7 @@ class _ThirdStepRegistrationState extends State<ThirdStepRegistration> {
                                 child: TextField(
                                   controller: _fourthDigitController,
                                   focusNode: _fourthDigitFocusNode,
+                                  obscureText: true,
                                   maxLength: 1,
                                   style: GoogleFonts.montserrat(
                                     color: Colors.black,
@@ -363,11 +367,13 @@ class _ThirdStepRegistrationState extends State<ThirdStepRegistration> {
 
                                   await register(
                                       _registerStepController.phoneNumber,
-                                      _registerStepController.pin.toString());
+                                      _registerStepController.pin
+                                          .toString()
+                                          .substring(0, 4));
 
                                   if (_error.isEmpty) {
                                     Get.to(
-                                      () => const FourthStepRegistration(),
+                                      () => FourthStepRegistration(),
                                       transition: Transition.rightToLeft,
                                       duration: const Duration(
                                         milliseconds: 500,

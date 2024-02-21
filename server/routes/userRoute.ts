@@ -5,6 +5,7 @@ const router = express.Router()
 
 router.route('/checkHandphoneNo/:handphoneNo').get(userController.checkHandphoneAvailability)
 router.route('/verifyOtp').get(userController.verifyOTP)
-router.route('/').post(userController.register)
+router.route('/register').post(userController.register)
+router.route('/login').post(userController.login)
 
 export default router
