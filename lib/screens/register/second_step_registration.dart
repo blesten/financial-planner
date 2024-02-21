@@ -28,12 +28,21 @@ class _SecondStepRegistrationState extends State<SecondStepRegistration> {
   final _thirdDigitFocusNode = FocusNode();
   final _fourthDigitFocusNode = FocusNode();
 
+  bool _error = false;
+
   @override
   void initState() {
     super.initState();
     _firstDigitController.addListener(_onTextChanged);
     _secondDigitController.addListener(_onTextChanged);
     _thirdDigitController.addListener(_onTextChanged);
+
+    if (_registerStepController.otp != 0) {
+      _firstDigitController.text = _registerStepController.otp.toString()[0];
+      _secondDigitController.text = _registerStepController.otp.toString()[1];
+      _thirdDigitController.text = _registerStepController.otp.toString()[2];
+      _fourthDigitController.text = _registerStepController.otp.toString()[3];
+    }
   }
 
   @override
@@ -147,130 +156,147 @@ class _SecondStepRegistrationState extends State<SecondStepRegistration> {
                         textAlign: TextAlign.center,
                       ),
                       SizedBox(height: 28.h),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                      Column(
                         children: [
-                          SizedBox(
-                            width: width * 0.15,
-                            child: TextField(
-                              controller: _firstDigitController,
-                              focusNode: _firstDigitFocusNode,
-                              maxLength: 1,
-                              style: GoogleFonts.montserrat(
-                                color: Colors.black,
-                                fontSize: 20.sp,
-                                fontWeight: FontWeight.normal,
-                              ),
-                              textAlign: TextAlign.center,
-                              keyboardType: TextInputType.number,
-                              decoration: InputDecoration(
-                                border: UnderlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: Colors.grey.shade600,
-                                    width: 1,
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              SizedBox(
+                                width: width * 0.15,
+                                child: TextField(
+                                  controller: _firstDigitController,
+                                  focusNode: _firstDigitFocusNode,
+                                  maxLength: 1,
+                                  style: GoogleFonts.montserrat(
+                                    color: Colors.black,
+                                    fontSize: 20.sp,
+                                    fontWeight: FontWeight.normal,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                  keyboardType: TextInputType.number,
+                                  decoration: InputDecoration(
+                                    border: UnderlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: Colors.grey.shade600,
+                                        width: 1,
+                                      ),
+                                    ),
+                                    focusedBorder: const UnderlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: kPrimary,
+                                        width: 2,
+                                      ),
+                                    ),
+                                    counterText: "",
                                   ),
                                 ),
-                                focusedBorder: const UnderlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: kPrimary,
-                                    width: 2,
+                              ),
+                              SizedBox(width: 15.w),
+                              SizedBox(
+                                width: width * 0.15,
+                                child: TextField(
+                                  controller: _secondDigitController,
+                                  focusNode: _secondDigitFocusNode,
+                                  maxLength: 1,
+                                  style: GoogleFonts.montserrat(
+                                    color: Colors.black,
+                                    fontSize: 20.sp,
+                                    fontWeight: FontWeight.normal,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                  keyboardType: TextInputType.number,
+                                  decoration: InputDecoration(
+                                    border: UnderlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: Colors.grey.shade600,
+                                        width: 1,
+                                      ),
+                                    ),
+                                    focusedBorder: const UnderlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: kPrimary,
+                                        width: 2,
+                                      ),
+                                    ),
+                                    counterText: "",
                                   ),
                                 ),
-                                counterText: "",
                               ),
-                            ),
+                              SizedBox(width: 15.w),
+                              SizedBox(
+                                width: width * 0.15,
+                                child: TextField(
+                                  controller: _thirdDigitController,
+                                  focusNode: _thirdDigitFocusNode,
+                                  maxLength: 1,
+                                  style: GoogleFonts.montserrat(
+                                    color: Colors.black,
+                                    fontSize: 20.sp,
+                                    fontWeight: FontWeight.normal,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                  keyboardType: TextInputType.number,
+                                  decoration: InputDecoration(
+                                    border: UnderlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: Colors.grey.shade600,
+                                        width: 1,
+                                      ),
+                                    ),
+                                    focusedBorder: const UnderlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: kPrimary,
+                                        width: 2,
+                                      ),
+                                    ),
+                                    counterText: "",
+                                  ),
+                                ),
+                              ),
+                              SizedBox(width: 15.w),
+                              SizedBox(
+                                width: width * 0.15,
+                                child: TextField(
+                                  controller: _fourthDigitController,
+                                  focusNode: _fourthDigitFocusNode,
+                                  maxLength: 1,
+                                  style: GoogleFonts.montserrat(
+                                    color: Colors.black,
+                                    fontSize: 20.sp,
+                                    fontWeight: FontWeight.normal,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                  keyboardType: TextInputType.number,
+                                  decoration: InputDecoration(
+                                    border: UnderlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: Colors.grey.shade600,
+                                        width: 1,
+                                      ),
+                                    ),
+                                    focusedBorder: const UnderlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: kPrimary,
+                                        width: 2,
+                                      ),
+                                    ),
+                                    counterText: "",
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
-                          SizedBox(width: 15.w),
-                          SizedBox(
-                            width: width * 0.15,
-                            child: TextField(
-                              controller: _secondDigitController,
-                              focusNode: _secondDigitFocusNode,
-                              maxLength: 1,
-                              style: GoogleFonts.montserrat(
-                                color: Colors.black,
-                                fontSize: 20.sp,
-                                fontWeight: FontWeight.normal,
-                              ),
-                              textAlign: TextAlign.center,
-                              keyboardType: TextInputType.number,
-                              decoration: InputDecoration(
-                                border: UnderlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: Colors.grey.shade600,
-                                    width: 1,
-                                  ),
-                                ),
-                                focusedBorder: const UnderlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: kPrimary,
-                                    width: 2,
-                                  ),
-                                ),
-                                counterText: "",
-                              ),
-                            ),
+                          Visibility(
+                            visible: _error,
+                            child: SizedBox(height: 12.h),
                           ),
-                          SizedBox(width: 15.w),
-                          SizedBox(
-                            width: width * 0.15,
-                            child: TextField(
-                              controller: _thirdDigitController,
-                              focusNode: _thirdDigitFocusNode,
-                              maxLength: 1,
-                              style: GoogleFonts.montserrat(
-                                color: Colors.black,
-                                fontSize: 20.sp,
-                                fontWeight: FontWeight.normal,
-                              ),
-                              textAlign: TextAlign.center,
-                              keyboardType: TextInputType.number,
-                              decoration: InputDecoration(
-                                border: UnderlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: Colors.grey.shade600,
-                                    width: 1,
-                                  ),
-                                ),
-                                focusedBorder: const UnderlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: kPrimary,
-                                    width: 2,
-                                  ),
-                                ),
-                                counterText: "",
-                              ),
-                            ),
-                          ),
-                          SizedBox(width: 15.w),
-                          SizedBox(
-                            width: width * 0.15,
-                            child: TextField(
-                              controller: _fourthDigitController,
-                              focusNode: _fourthDigitFocusNode,
-                              maxLength: 1,
-                              style: GoogleFonts.montserrat(
-                                color: Colors.black,
-                                fontSize: 20.sp,
-                                fontWeight: FontWeight.normal,
-                              ),
-                              textAlign: TextAlign.center,
-                              keyboardType: TextInputType.number,
-                              decoration: InputDecoration(
-                                border: UnderlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: Colors.grey.shade600,
-                                    width: 1,
-                                  ),
-                                ),
-                                focusedBorder: const UnderlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: kPrimary,
-                                    width: 2,
-                                  ),
-                                ),
-                                counterText: "",
-                              ),
+                          Visibility(
+                            visible: _error,
+                            child: ReusableText(
+                              text: "Please provide OTP (One Time Password)",
+                              fontSize: 11.sp,
+                              color: Colors.red.shade600,
+                              fontWeight: FontWeight.w600,
                             ),
                           ),
                         ],
@@ -285,6 +311,16 @@ class _SecondStepRegistrationState extends State<SecondStepRegistration> {
                             side: BorderSide.none,
                           ),
                           onPressed: () {
+                            if (_firstDigitController.text.isEmpty ||
+                                _secondDigitController.text.isEmpty ||
+                                _thirdDigitController.text.isEmpty ||
+                                _fourthDigitController.text.isEmpty) {
+                              setState(() {
+                                _error = true;
+                              });
+                              return;
+                            }
+
                             _registerStepController.otp = int.parse([
                               _firstDigitController.text,
                               _secondDigitController.text,

@@ -21,6 +21,16 @@ class _FirstStepRegistrationState extends State<FirstStepRegistration> {
   final _phoneNumberController = TextEditingController();
   final _focusNode = FocusNode();
 
+  bool _error = false;
+
+  @override
+  void initState() {
+    super.initState();
+    if (_registerStepController.phoneNumber.isNotEmpty) {
+      _phoneNumberController.text = _registerStepController.phoneNumber;
+    }
+  }
+
   @override
   void dispose() {
     super.dispose();
@@ -100,87 +110,105 @@ class _FirstStepRegistrationState extends State<FirstStepRegistration> {
                           height: 1.5,
                         ),
                         SizedBox(height: 30.h),
-                        Container(
-                          width: width * 0.9,
-                          height: 52.h,
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              color: Colors.grey.shade700,
-                              style: BorderStyle.solid,
-                              width: 1.w,
-                            ),
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(8.r)),
-                          ),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Row(
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              width: width * 0.9,
+                              height: 52.h,
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: Colors.grey.shade700,
+                                  style: BorderStyle.solid,
+                                  width: 1.w,
+                                ),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(8.r)),
+                              ),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
-                                  Container(
-                                    width: 40.w,
-                                    height: 32.h,
-                                    margin: EdgeInsets.only(left: 15.w),
-                                    decoration: BoxDecoration(
-                                      border: Border.all(
-                                        color: Colors.grey.shade400,
-                                        style: BorderStyle.solid,
-                                        width: 1,
+                                  Row(
+                                    children: [
+                                      Container(
+                                        width: 40.w,
+                                        height: 32.h,
+                                        margin: EdgeInsets.only(left: 15.w),
+                                        decoration: BoxDecoration(
+                                          border: Border.all(
+                                            color: Colors.grey.shade400,
+                                            style: BorderStyle.solid,
+                                            width: 1,
+                                          ),
+                                        ),
+                                        child: Column(
+                                          children: [
+                                            Container(
+                                              width: 40.w,
+                                              height: 14.h,
+                                              decoration: const BoxDecoration(
+                                                  color: Colors.red),
+                                            ),
+                                            Container(
+                                              width: 40.w,
+                                              height: 14.h,
+                                              decoration: const BoxDecoration(
+                                                  color: Colors.white),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      SizedBox(width: 12.w),
+                                      ReusableText(
+                                        text: "+62",
+                                        fontSize: 16.sp,
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.normal,
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(width: 7.w),
+                                  Expanded(
+                                    child: SizedBox(
+                                      height: 32.h,
+                                      child: TextField(
+                                        style: GoogleFonts.montserrat(
+                                          color: Colors.black,
+                                          fontSize: 16.sp,
+                                          fontWeight: FontWeight.normal,
+                                        ),
+                                        controller: _phoneNumberController,
+                                        keyboardType: TextInputType.phone,
+                                        focusNode: _focusNode,
+                                        decoration: const InputDecoration(
+                                          border: InputBorder.none,
+                                          focusedBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                              color: Colors.transparent,
+                                              width: 0,
+                                            ),
+                                          ),
+                                        ),
                                       ),
                                     ),
-                                    child: Column(
-                                      children: [
-                                        Container(
-                                          width: 40.w,
-                                          height: 14.h,
-                                          decoration: const BoxDecoration(
-                                              color: Colors.red),
-                                        ),
-                                        Container(
-                                          width: 40.w,
-                                          height: 14.h,
-                                          decoration: const BoxDecoration(
-                                              color: Colors.white),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  SizedBox(width: 12.w),
-                                  ReusableText(
-                                    text: "+62",
-                                    fontSize: 16.sp,
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.normal,
                                   ),
                                 ],
                               ),
-                              SizedBox(width: 7.w),
-                              Expanded(
-                                child: SizedBox(
-                                  height: 32.h,
-                                  child: TextField(
-                                    style: GoogleFonts.montserrat(
-                                      color: Colors.black,
-                                      fontSize: 16.sp,
-                                      fontWeight: FontWeight.normal,
-                                    ),
-                                    controller: _phoneNumberController,
-                                    keyboardType: TextInputType.phone,
-                                    focusNode: _focusNode,
-                                    decoration: const InputDecoration(
-                                      border: InputBorder.none,
-                                      focusedBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                          color: Colors.transparent,
-                                          width: 0,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
+                            ),
+                            Visibility(
+                              visible: _error,
+                              child: SizedBox(height: 12.h),
+                            ),
+                            Visibility(
+                              visible: _error,
+                              child: ReusableText(
+                                text: "Please provide valid phone number",
+                                fontSize: 11.sp,
+                                color: Colors.red.shade600,
+                                fontWeight: FontWeight.w600,
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
                         SizedBox(height: 42.h),
                         SizedBox(
@@ -192,6 +220,13 @@ class _FirstStepRegistrationState extends State<FirstStepRegistration> {
                               side: BorderSide.none,
                             ),
                             onPressed: () {
+                              if (_phoneNumberController.text.length < 10) {
+                                setState(() {
+                                  _error = true;
+                                });
+                                return;
+                              }
+
                               _registerStepController.phoneNumber =
                                   _phoneNumberController.text;
                               Get.to(
