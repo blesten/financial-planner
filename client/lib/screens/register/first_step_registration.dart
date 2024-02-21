@@ -8,6 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 
 class FirstStepRegistration extends StatefulWidget {
   const FirstStepRegistration({super.key});
@@ -21,7 +23,35 @@ class _FirstStepRegistrationState extends State<FirstStepRegistration> {
   final _phoneNumberController = TextEditingController();
   final _focusNode = FocusNode();
 
-  bool _error = false;
+  String _error = "";
+  bool _isLoading = false;
+
+  Future<void> sendOtp(String handphoneNo) async {
+    setState(() {
+      _isLoading = true;
+      _error = "";
+    });
+
+    try {
+      var url = '$serverURL/api/v1/users/checkHandphoneNo/$handphoneNo';
+
+      var response = await http.get(Uri.parse(url));
+
+      if (response.statusCode != 200) {
+        setState(() {
+          _error = json.decode(response.body)['msg'];
+        });
+      }
+    } catch (err) {
+      setState(() {
+        _error = err.toString();
+      });
+    }
+
+    setState(() {
+      _isLoading = false;
+    });
+  }
 
   @override
   void initState() {
@@ -196,13 +226,13 @@ class _FirstStepRegistrationState extends State<FirstStepRegistration> {
                               ),
                             ),
                             Visibility(
-                              visible: _error,
+                              visible: _error.isNotEmpty,
                               child: SizedBox(height: 12.h),
                             ),
                             Visibility(
-                              visible: _error,
+                              visible: _error.isNotEmpty,
                               child: ReusableText(
-                                text: "Please provide valid phone number",
+                                text: _error,
                                 fontSize: 11.sp,
                                 color: Colors.red.shade600,
                                 fontWeight: FontWeight.w600,
@@ -216,34 +246,48 @@ class _FirstStepRegistrationState extends State<FirstStepRegistration> {
                           height: 52.h,
                           child: OutlinedButton(
                             style: OutlinedButton.styleFrom(
-                              backgroundColor: kPrimary,
+                              backgroundColor: _isLoading
+                                  ? kPrimary.withOpacity(0.2)
+                                  : kPrimary,
                               side: BorderSide.none,
                             ),
-                            onPressed: () {
-                              if (_phoneNumberController.text.length < 10) {
-                                setState(() {
-                                  _error = true;
-                                });
-                                return;
-                              }
+                            onPressed: _isLoading
+                                ? null
+                                : () async {
+                                    if (_phoneNumberController.text.length <
+                                        10) {
+                                      setState(() {
+                                        _error =
+                                            "Please provide valid phone number";
+                                      });
+                                      return;
+                                    }
 
-                              _registerStepController.phoneNumber =
-                                  _phoneNumberController.text;
-                              Get.to(
-                                () => const SecondStepRegistration(),
-                                transition: Transition.rightToLeft,
-                                duration: const Duration(
-                                  milliseconds: 500,
-                                ),
-                              );
-                              _registerStepController.currentStep = 1;
-                            },
-                            child: ReusableText(
-                              text: 'Continue',
-                              color: Colors.white,
-                              fontSize: 14.sp,
-                              fontWeight: FontWeight.w600,
-                            ),
+                                    _registerStepController.phoneNumber =
+                                        _phoneNumberController.text;
+
+                                    await sendOtp(
+                                        _registerStepController.phoneNumber);
+
+                                    if (_error.isEmpty) {
+                                      Get.to(
+                                        () => const SecondStepRegistration(),
+                                        transition: Transition.rightToLeft,
+                                        duration: const Duration(
+                                          milliseconds: 500,
+                                        ),
+                                      );
+                                      _registerStepController.currentStep = 1;
+                                    }
+                                  },
+                            child: _isLoading
+                                ? const CircularProgressIndicator()
+                                : ReusableText(
+                                    text: 'Continue',
+                                    color: Colors.white,
+                                    fontSize: 14.sp,
+                                    fontWeight: FontWeight.w600,
+                                  ),
                           ),
                         ),
                       ],

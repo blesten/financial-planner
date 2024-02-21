@@ -8,6 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 
 class ThirdStepRegistration extends StatefulWidget {
   const ThirdStepRegistration({super.key});
@@ -28,7 +30,41 @@ class _ThirdStepRegistrationState extends State<ThirdStepRegistration> {
   final _thirdDigitFocusNode = FocusNode();
   final _fourthDigitFocusNode = FocusNode();
 
-  bool _error = false;
+  String _error = "";
+  bool _isLoading = false;
+
+  Future<void> register(String handphoneNo, String pin) async {
+    setState(() {
+      _isLoading = true;
+      _error = "";
+    });
+
+    try {
+      var url = '$serverURL/api/v1/users';
+
+      var response = await http.post(
+        Uri.parse(url),
+        body: {
+          "handphoneNo": handphoneNo,
+          "pin": pin,
+        },
+      );
+
+      if (response.statusCode != 200) {
+        setState(() {
+          _error = json.decode(response.body)['msg'];
+        });
+      }
+    } catch (err) {
+      setState(() {
+        _error = err.toString();
+      });
+    }
+
+    setState(() {
+      _isLoading = false;
+    });
+  }
 
   @override
   void initState() {
@@ -280,13 +316,13 @@ class _ThirdStepRegistrationState extends State<ThirdStepRegistration> {
                             ],
                           ),
                           Visibility(
-                            visible: _error,
+                            visible: _error.isNotEmpty,
                             child: SizedBox(height: 12.h),
                           ),
                           Visibility(
-                            visible: _error,
+                            visible: _error.isNotEmpty,
                             child: ReusableText(
-                              text: "Please provide application PIN",
+                              text: _error,
                               fontSize: 11.sp,
                               color: Colors.red.shade600,
                               fontWeight: FontWeight.w600,
@@ -300,43 +336,55 @@ class _ThirdStepRegistrationState extends State<ThirdStepRegistration> {
                         height: 52.h,
                         child: OutlinedButton(
                           style: OutlinedButton.styleFrom(
-                            backgroundColor: kPrimary,
+                            backgroundColor: _isLoading
+                                ? kPrimary.withOpacity(0.2)
+                                : kPrimary,
                             side: BorderSide.none,
                           ),
-                          onPressed: () {
-                            if (_firstDigitController.text.isEmpty ||
-                                _secondDigitController.text.isEmpty ||
-                                _thirdDigitController.text.isEmpty ||
-                                _fourthDigitController.text.isEmpty) {
-                              setState(() {
-                                _error = true;
-                              });
-                              return;
-                            }
+                          onPressed: _isLoading
+                              ? null
+                              : () async {
+                                  if (_firstDigitController.text.isEmpty ||
+                                      _secondDigitController.text.isEmpty ||
+                                      _thirdDigitController.text.isEmpty ||
+                                      _fourthDigitController.text.isEmpty) {
+                                    setState(() {
+                                      _error = "Please provide application PIN";
+                                    });
+                                    return;
+                                  }
 
-                            _registerStepController.pin = int.parse([
-                              _firstDigitController.text,
-                              _secondDigitController.text,
-                              _thirdDigitController.text,
-                              _fourthDigitController.text
-                            ].join(''));
+                                  _registerStepController.pin = int.parse([
+                                    _firstDigitController.text,
+                                    _secondDigitController.text,
+                                    _thirdDigitController.text,
+                                    _fourthDigitController.text
+                                  ].join(''));
 
-                            Get.to(
-                              () => const FourthStepRegistration(),
-                              transition: Transition.rightToLeft,
-                              duration: const Duration(
-                                milliseconds: 500,
-                              ),
-                            );
+                                  await register(
+                                      _registerStepController.phoneNumber,
+                                      _registerStepController.pin.toString());
 
-                            _registerStepController.currentStep = 3;
-                          },
-                          child: ReusableText(
-                            text: 'Continue',
-                            color: Colors.white,
-                            fontSize: 14.sp,
-                            fontWeight: FontWeight.w600,
-                          ),
+                                  if (_error.isEmpty) {
+                                    Get.to(
+                                      () => const FourthStepRegistration(),
+                                      transition: Transition.rightToLeft,
+                                      duration: const Duration(
+                                        milliseconds: 500,
+                                      ),
+                                    );
+
+                                    _registerStepController.currentStep = 3;
+                                  }
+                                },
+                          child: _isLoading
+                              ? const CircularProgressIndicator()
+                              : ReusableText(
+                                  text: 'Continue',
+                                  color: Colors.white,
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.w600,
+                                ),
                         ),
                       ),
                     ],
