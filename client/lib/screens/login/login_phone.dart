@@ -1,8 +1,14 @@
+import 'dart:convert';
+import 'package:financial_planner/screens/login/login_pin.dart';
+import 'package:financial_planner/screens/register/first_step_registration.dart';
 import 'package:financial_planner/utils/constants.dart';
 import 'package:financial_planner/widgets/general/reusable_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPhone extends StatefulWidget {
   const LoginPhone({super.key});
@@ -17,6 +23,38 @@ class _LoginPhoneState extends State<LoginPhone> {
 
   String _error = "";
   bool _isLoading = false;
+
+  Future<void> checkLoginPhone(String handphoneNo) async {
+    setState(() {
+      _isLoading = true;
+      _error = "";
+    });
+
+    try {
+      var url = '$serverURL/api/v1/users/checkLoginPhone/$handphoneNo';
+
+      var response = await http.get(Uri.parse(url));
+
+      if (response.statusCode != 200) {
+        setState(() {
+          _error = json.decode(response.body)['msg'];
+        });
+      }
+    } catch (err) {
+      setState(() {
+        _error = err.toString();
+      });
+    }
+
+    setState(() {
+      _isLoading = false;
+    });
+  }
+
+  Future<void> saveHandponeNo(String handphoneNo) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString("budget_buddy_no", handphoneNo);
+  }
 
   @override
   void dispose() {
@@ -174,7 +212,31 @@ class _LoginPhoneState extends State<LoginPhone> {
                           _isLoading ? kPrimary.withOpacity(0.2) : kPrimary,
                       side: BorderSide.none,
                     ),
-                    onPressed: _isLoading ? null : () async {},
+                    onPressed: _isLoading
+                        ? null
+                        : () async {
+                            if (_phoneNumberController.text.length < 10) {
+                              setState(() {
+                                _error = "Please provide valid phone number";
+                              });
+
+                              return;
+                            }
+
+                            await checkLoginPhone(_phoneNumberController.text);
+
+                            if (_error.isEmpty) {
+                              await saveHandponeNo(_phoneNumberController.text);
+
+                              Get.to(
+                                () => const LoginPin(),
+                                transition: Transition.fadeIn,
+                                duration: const Duration(
+                                  milliseconds: 500,
+                                ),
+                              );
+                            }
+                          },
                     child: _isLoading
                         ? const CircularProgressIndicator()
                         : ReusableText(
@@ -183,6 +245,26 @@ class _LoginPhoneState extends State<LoginPhone> {
                             fontSize: 14.sp,
                             fontWeight: FontWeight.w600,
                           ),
+                  ),
+                ),
+                SizedBox(
+                  height: 20.h,
+                ),
+                GestureDetector(
+                  onTap: () {
+                    Get.to(
+                      () => const FirstStepRegistration(),
+                      transition: Transition.fadeIn,
+                      duration: const Duration(
+                        milliseconds: 500,
+                      ),
+                    );
+                  },
+                  child: ReusableText(
+                    text: "Create an account for free",
+                    fontSize: 14.sp,
+                    color: kPrimary,
+                    fontWeight: FontWeight.w600,
                   ),
                 ),
               ],

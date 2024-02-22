@@ -1,3 +1,4 @@
+import 'package:financial_planner/screens/login/login_phone.dart';
 import 'package:financial_planner/screens/register/register.dart';
 import 'package:financial_planner/utils/constants.dart';
 import 'package:financial_planner/widgets/general/reusable_text.dart';
@@ -45,7 +46,15 @@ class Welcome extends StatelessWidget {
               ),
               SizedBox(height: 24.h),
               GestureDetector(
-                onTap: () {},
+                onTap: () {
+                  Get.to(
+                    () => const LoginPhone(),
+                    transition: Transition.fadeIn,
+                    duration: const Duration(
+                      milliseconds: 500,
+                    ),
+                  );
+                },
                 child: ReusableText(
                   text: "Login to Account",
                   fontSize: 14.sp,

@@ -19,7 +19,7 @@ class FirstStepRegistration extends StatefulWidget {
 }
 
 class _FirstStepRegistrationState extends State<FirstStepRegistration> {
-  final _registerStepController = Get.find<RegisterController>();
+  final _registerStepController = Get.put(RegisterController());
   final _phoneNumberController = TextEditingController();
   final _focusNode = FocusNode();
 

@@ -7,5 +7,6 @@ router.route('/checkHandphoneNo/:handphoneNo').get(userController.checkHandphone
 router.route('/verifyOtp').get(userController.verifyOTP)
 router.route('/register').post(userController.register)
 router.route('/login').post(userController.login)
+router.route('/checkLoginPhone/:handphoneNo').get(userController.checkLoginPhone)
 
 export default router

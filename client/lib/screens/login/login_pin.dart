@@ -1,4 +1,5 @@
 import 'package:financial_planner/screens/home.dart';
+import 'package:financial_planner/screens/login/login_phone.dart';
 import 'package:financial_planner/utils/constants.dart';
 import 'package:financial_planner/widgets/general/reusable_text.dart';
 import 'package:flutter/material.dart';
@@ -62,6 +63,11 @@ class _LoginPinState extends State<LoginPin> {
     setState(() {
       _isLoading = false;
     });
+  }
+
+  Future<void> _setIsRegisteredStatus() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setBool("budget_buddy_is_registered_status", true);
   }
 
   Future<void> _loadHandphoneNo() async {
@@ -334,6 +340,8 @@ class _LoginPinState extends State<LoginPin> {
                             await login(_handphoneNo, pin);
 
                             if (_error.isEmpty) {
+                              _setIsRegisteredStatus();
+
                               Get.to(
                                 () => const Home(),
                                 transition: Transition.fadeIn,
@@ -357,8 +365,15 @@ class _LoginPinState extends State<LoginPin> {
                   height: 20.h,
                 ),
                 GestureDetector(
-                  // when _countdown is 0, then onTap is not null, but when it was clicked, it should reset to 30 again
-                  onTap: () {},
+                  onTap: () {
+                    Get.to(
+                      () => const LoginPhone(),
+                      transition: Transition.fadeIn,
+                      duration: const Duration(
+                        milliseconds: 500,
+                      ),
+                    );
+                  },
                   child: ReusableText(
                     text: "Sign in with another number",
                     fontSize: 14.sp,

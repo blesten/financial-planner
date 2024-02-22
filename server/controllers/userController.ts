@@ -91,6 +91,22 @@ const userController = {
     } catch (error: any) {
       return res.status(500).json({ msg: error.message })
     }
+  },
+  checkLoginPhone: async(req: Request, res: Response) => {
+    try {
+      const { handphoneNo } = req.params
+
+      if (!isValidHandphoneNo(`+62${handphoneNo}`))
+        return res.status(400).json({ msg: 'Please provide valid handphone no' })
+
+      const user = await User.findOne({ handphoneNo: `+62${handphoneNo}` })
+      if (!user)
+        return res.status(401).json({ msg: 'Handphone number not registered' })
+
+      return res.status(200).json({ msg: 'Handphone no is registered' })
+    } catch (error: any) {
+      return res.status(500).json({ msg: error.message })
+    }
   }
 }
 
