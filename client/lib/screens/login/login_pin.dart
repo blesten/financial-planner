@@ -1,5 +1,5 @@
-import 'package:financial_planner/screens/home.dart';
 import 'package:financial_planner/screens/login/login_phone.dart';
+import 'package:financial_planner/screens/main_screen.dart';
 import 'package:financial_planner/utils/constants.dart';
 import 'package:financial_planner/widgets/general/reusable_text.dart';
 import 'package:flutter/material.dart';
@@ -343,7 +343,7 @@ class _LoginPinState extends State<LoginPin> {
                               _setIsRegisteredStatus();
 
                               Get.to(
-                                () => const Home(),
+                                () => MainScreen(),
                                 transition: Transition.fadeIn,
                                 duration: const Duration(
                                   milliseconds: 500,
