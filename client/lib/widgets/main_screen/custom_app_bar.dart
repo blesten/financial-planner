@@ -1,6 +1,8 @@
+import 'package:financial_planner/screens/user_notification.dart';
 import 'package:financial_planner/widgets/general/reusable_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 
 class CustomAppBar extends StatelessWidget {
   const CustomAppBar({super.key});
@@ -47,19 +49,30 @@ class CustomAppBar extends StatelessWidget {
               )
             ],
           ),
-          Container(
-            width: 35.w,
-            height: 35.h,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(50.r),
-              border: Border.all(
-                color: Colors.black,
-                style: BorderStyle.solid,
-                width: 1,
+          GestureDetector(
+            onTap: () {
+              Get.to(
+                () => const UserNotification(),
+                transition: Transition.rightToLeft,
+                duration: const Duration(
+                  milliseconds: 150,
+                ),
+              );
+            },
+            child: Container(
+              width: 35.w,
+              height: 35.h,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(50.r),
+                border: Border.all(
+                  color: Colors.black,
+                  style: BorderStyle.solid,
+                  width: 1,
+                ),
               ),
-            ),
-            child: const Icon(
-              Icons.notifications_outlined,
+              child: const Icon(
+                Icons.notifications_outlined,
+              ),
             ),
           ),
         ],

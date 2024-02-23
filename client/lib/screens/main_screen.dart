@@ -1,8 +1,8 @@
 import 'package:financial_planner/controllers/bottom_nav_controller.dart';
 import 'package:financial_planner/screens/home/home.dart';
 import 'package:financial_planner/screens/debit_card.dart';
-import 'package:financial_planner/screens/profile.dart';
-import 'package:financial_planner/screens/report.dart';
+import 'package:financial_planner/screens/profile/profile.dart';
+import 'package:financial_planner/screens/report/report.dart';
 import 'package:financial_planner/widgets/main_screen/bottom_nav_bar.dart';
 import 'package:financial_planner/widgets/main_screen/custom_app_bar.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +16,7 @@ class MainScreen extends StatelessWidget {
     Home(),
     const DebitCard(),
     const Report(),
-    const Profile(),
+    Profile(),
   ];
 
   MainScreen({super.key});
@@ -31,7 +31,7 @@ class MainScreen extends StatelessWidget {
             child: const CustomAppBar(),
           ),
           body: screen[_bottomNavController.currentIndex],
-          bottomNavigationBar: BottomNavBar(),
+          bottomNavigationBar: const BottomNavBar(),
         ),
       ),
     );
