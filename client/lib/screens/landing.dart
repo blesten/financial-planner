@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:financial_planner/screens/login/login.dart';
 import 'package:financial_planner/screens/welcome.dart';
 import 'package:financial_planner/utils/constants.dart';
+import 'package:financial_planner/widgets/general/reusable_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -46,13 +47,26 @@ class _LandingState extends State<Landing> {
     return Scaffold(
       backgroundColor: kPrimary,
       body: Center(
-        child: Container(
-          width: 200.w,
-          height: 200.h,
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(100),
-          ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              width: 200.w,
+              height: 200.h,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(100),
+              ),
+              child: Image.asset("assets/logo.png"),
+            ),
+            SizedBox(height: 24.h),
+            ReusableText(
+              text: "Budget Buddy",
+              fontSize: 24.sp,
+              color: Colors.white,
+              fontWeight: FontWeight.w600,
+            ),
+          ],
         ),
       ),
     );

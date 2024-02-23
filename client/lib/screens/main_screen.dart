@@ -1,5 +1,5 @@
 import 'package:financial_planner/controllers/bottom_nav_controller.dart';
-import 'package:financial_planner/screens/home.dart';
+import 'package:financial_planner/screens/home/home.dart';
 import 'package:financial_planner/screens/debit_card.dart';
 import 'package:financial_planner/screens/profile.dart';
 import 'package:financial_planner/screens/report.dart';
@@ -13,7 +13,7 @@ class MainScreen extends StatelessWidget {
   final _bottomNavController = Get.put(BottomNavController());
 
   final List<Widget> screen = [
-    const Home(),
+    Home(),
     const DebitCard(),
     const Report(),
     const Profile(),

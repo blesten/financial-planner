@@ -40,6 +40,7 @@ dependencies:
   carousel_slider: ^4.2.1
   get: ^4.6.6
   shared_preferences: ^2.2.2
+  fl_chart: ^0.66.2
 
 dev_dependencies:
   flutter_test:
@@ -74,6 +75,13 @@ flutter:
     - assets/images/registration_4.png
     - assets/images/login_pin.png
     - assets/images/login_phone.png
+    - assets/logo.png
+    - assets/card_templates/red.png
+    - assets/card_templates/blue.png
+    - assets/icons/mastercard.png
+    - assets/icons/visa.png
+    - assets/icons/chip.png
+    - assets/icons/contactless.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
