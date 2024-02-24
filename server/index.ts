@@ -15,6 +15,9 @@ app.use(express.urlencoded({ extended: true }))
 app.use(cors())
 
 app.use('/api/v1/users', routers.userRoute)
+app.use('/api/v1/cards', routers.cardRoute)
+app.use('/api/v1/transactions', routers.transactionRoute)
+app.use('/api/v1/notifications', routers.notificationRoute)
 
 connectDB()
 app.listen(process.env.PORT, () => console.log(`Server is running on PORT ${process.env.PORT}`))

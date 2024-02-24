@@ -78,6 +78,9 @@ flutter:
     - assets/logo.png
     - assets/card_templates/red.png
     - assets/card_templates/blue.png
+    - assets/card_templates/green.png
+    - assets/card_templates/orange.png
+    - assets/card_templates/purple.png
     - assets/icons/mastercard.png
     - assets/icons/visa.png
     - assets/icons/chip.png

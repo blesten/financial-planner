@@ -18,3 +18,33 @@ export interface IUser extends IGeneralField {
   handphoneNo: string
   pin: string
 }
+
+export interface IReqUser extends Request {
+  user?: IUser
+}
+
+export interface ICard extends IGeneralField {
+  user: ObjectId
+  title: string
+  name: string
+  no: string
+  type: string
+  contactless: boolean
+  expDate: string
+  color: string
+}
+
+export interface INotification extends IGeneralField {
+  user: ObjectId
+  title: string
+  description: string
+  isRead: boolean
+}
+
+export interface ITransaction extends IGeneralField {
+  user: ObjectId
+  card: ObjectId
+  transactionCategory: string
+  amount: number
+  expenseCategory: string
+}

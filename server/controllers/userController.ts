@@ -1,9 +1,10 @@
 import { Request, Response } from 'express'
-import { isValidHandphoneNo } from '../utils/validator'
+import { isValidEmail, isValidHandphoneNo } from '../utils/validator'
 import { sendVerificationCode, verifyVerificationCode } from '../utils/verification'
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import User from '../models/User'
+import { IReqUser } from '../utils/interface'
 
 const userController = {
   checkHandphoneAvailability: async(req: Request, res: Response) => {
@@ -104,6 +105,67 @@ const userController = {
         return res.status(401).json({ msg: 'Handphone number not registered' })
 
       return res.status(200).json({ msg: 'Handphone no is registered' })
+    } catch (error: any) {
+      return res.status(500).json({ msg: error.message })
+    }
+  },
+  updateProfile: async(req: IReqUser, res: Response) => {
+    const {
+      name,
+      email
+    } = req.body
+
+    if (!name || !email)
+      return res.status(400).json({ msg: 'Please provide required field.' })
+
+    if (!isValidEmail(email))
+      return res.status(400).json({ msg: 'Please provide valid email address' })
+
+    try {
+      const findEmail = await User.findOne({ email })
+      if (findEmail)
+        return res.status(400).json({ msg: 'Email has been used before' })
+
+      const user = await User.findById(req.user?._id)
+      if (!user)
+        return res.status(404).json({ msg: 'User not found.' })
+
+      user.name = name
+      user.email = email
+      await user.save()
+
+      return res.status(200).json({
+        msg: 'Profile has been updated successfully.',
+        user
+      })
+    } catch (error: any) {
+      return res.status(500).json({ msg: error.message })
+    }
+  },
+  changePIN: async(req: IReqUser, res: Response) => {
+    const { currentPIN, newPIN } = req.body
+
+    if (!currentPIN || !newPIN)
+      return res.status(400).json({ msg: 'Please provide required field.' })
+
+    if (currentPIN.length < 4 || currentPIN.length > 4 || newPIN.length < 4 || newPIN.length > 4)
+      return res.status(400).json({ msg: 'PIN should be 4 digit number.' })
+
+    try {
+      const user = await User.findById(req.user?._id)
+      if (!user)
+        return res.status(404).json({ msg: 'User not found.' })
+
+      const checkCurrentPIN = await bcrypt.compare(currentPIN, user.pin)
+      if (!checkCurrentPIN)
+        return res.status(400).json({ msg: 'Current PIN is incorrect.'})
+
+      const newPinHash = await bcrypt.hash(newPIN, 12)
+
+      user.pin = newPinHash
+      await user.save()
+
+      return res.status(200).json({ msg: 'PIN has been changed successfully' })
     } catch (error: any) {
       return res.status(500).json({ msg: error.message })
     }
