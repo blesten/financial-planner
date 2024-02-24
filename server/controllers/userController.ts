@@ -115,14 +115,11 @@ const userController = {
       email
     } = req.body
 
-    if (!name || !email)
-      return res.status(400).json({ msg: 'Please provide required field.' })
-
-    if (!isValidEmail(email))
+    if (email && !isValidEmail(email))
       return res.status(400).json({ msg: 'Please provide valid email address' })
 
     try {
-      const findEmail = await User.findOne({ email })
+      const findEmail = await User.findOne({ email, _id: { $ne: req.user?._id } })
       if (findEmail)
         return res.status(400).json({ msg: 'Email has been used before' })
 

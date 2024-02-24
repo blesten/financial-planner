@@ -26,6 +26,7 @@ class MainScreen extends StatelessWidget {
     return Obx(
       () => SafeArea(
         child: Scaffold(
+          resizeToAvoidBottomInset: false,
           appBar: PreferredSize(
             preferredSize: Size.fromHeight(100.h),
             child: CustomAppBar(),
