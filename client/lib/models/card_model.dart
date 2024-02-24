@@ -1,12 +1,12 @@
 class CardModel {
-  final String id;
-  final String title;
-  final String name;
-  final String no;
-  final String type;
-  final bool contactless;
-  final String expDate;
-  final String color;
+  String id;
+  String title;
+  String name;
+  String no;
+  String type;
+  bool contactless;
+  String expDate;
+  String color;
 
   CardModel({
     required this.id,

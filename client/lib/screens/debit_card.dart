@@ -40,22 +40,26 @@ class _DebitCardState extends State<DebitCard> {
   late String _selectedMonth;
   late int _selectedYear;
 
+  String _selectedId = "";
+
+  final colors = ["red", "blue", "orange", "purple", "green"];
+
   @override
   void initState() {
     super.initState();
     _months = [
-      'January',
-      'February',
-      'March',
-      'April',
-      'May',
-      'June',
-      'July',
-      'August',
-      'September',
-      'October',
-      'November',
-      'December'
+      '01',
+      '02',
+      '03',
+      '04',
+      '05',
+      '06',
+      '07',
+      '08',
+      '09',
+      '10',
+      '11',
+      '12'
     ];
     _years = List.generate(11, (index) => DateTime.now().year - 5 + index);
     _selectedMonth = _months[DateTime.now().month - 1];
@@ -223,16 +227,100 @@ class _DebitCardState extends State<DebitCard> {
                                         ),
                                         Row(
                                           children: [
-                                            Icon(
-                                              Icons.edit,
-                                              size: 20.sp,
-                                              color: Colors.blue.shade500,
+                                            GestureDetector(
+                                              onTap: () {
+                                                setState(() {
+                                                  _selectedId = _cardController
+                                                      .cards[index].id;
+                                                  _cardColor = colors.indexOf(
+                                                      _cardController
+                                                          .cards[index].color);
+                                                  _isContactless =
+                                                      _cardController
+                                                          .cards[index]
+                                                          .contactless;
+                                                  _cardTitleController.text =
+                                                      _cardController
+                                                          .cards[index].title;
+                                                  _nameOnCardController.text =
+                                                      _cardController
+                                                          .cards[index].name;
+                                                  _imaginaryCardNumberController
+                                                          .text =
+                                                      _cardController
+                                                          .cards[index].no;
+                                                  _cardTypeValue =
+                                                      _cardController
+                                                          .cards[index].type;
+                                                  _selectedMonth =
+                                                      _cardController
+                                                          .cards[index].expDate
+                                                          .split("/")[0];
+                                                  _selectedYear = int.parse(
+                                                      _cardController
+                                                          .cards[index].expDate
+                                                          .split("/")[1]);
+                                                });
+                                                _upsertCard();
+                                              },
+                                              child: Icon(
+                                                Icons.edit,
+                                                size: 20.sp,
+                                                color: Colors.blue.shade500,
+                                              ),
                                             ),
                                             SizedBox(width: 10.w),
-                                            Icon(
-                                              Icons.delete,
-                                              size: 20.sp,
-                                              color: Colors.red.shade500,
+                                            GestureDetector(
+                                              onTap: () {
+                                                setState(() {
+                                                  _selectedId = _cardController
+                                                      .cards[index].id;
+                                                });
+                                                showDialog(
+                                                  context: context,
+                                                  barrierDismissible: false,
+                                                  builder: (context) {
+                                                    return AlertDialog(
+                                                      title: const Text(
+                                                          "Delete Confirmation"),
+                                                      content: const Text(
+                                                          "Are you sure to delete this card?"),
+                                                      actions: [
+                                                        TextButton(
+                                                          onPressed: () {
+                                                            setState(() {
+                                                              _selectedId = "";
+                                                            });
+                                                            Navigator.of(
+                                                                    context)
+                                                                .pop();
+                                                          },
+                                                          child:
+                                                              const Text("No"),
+                                                        ),
+                                                        TextButton(
+                                                          onPressed: () async {
+                                                            await _cardController
+                                                                .deleteCard(
+                                                                    id: _selectedId);
+                                                            _selectedId = "";
+                                                            Navigator.of(
+                                                                    context)
+                                                                .pop();
+                                                          },
+                                                          child:
+                                                              const Text("Yes"),
+                                                        ),
+                                                      ],
+                                                    );
+                                                  },
+                                                );
+                                              },
+                                              child: Icon(
+                                                Icons.delete,
+                                                size: 20.sp,
+                                                color: Colors.red.shade500,
+                                              ),
                                             ),
                                           ],
                                         ),
@@ -266,22 +354,6 @@ class _DebitCardState extends State<DebitCard> {
   }
 
   Future<dynamic> _upsertCard() {
-    const colors = ["red", "blue", "orange", "purple", "green"];
-    const monthsMap = {
-      "January": "01",
-      "February": "02",
-      "March": "03",
-      "April": "04",
-      "May": "05",
-      "June": "06",
-      "July": "07",
-      "August": "08",
-      "September": "09",
-      "October": "10",
-      "November": "11",
-      "December": "12",
-    };
-
     return showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -328,8 +400,7 @@ class _DebitCardState extends State<DebitCard> {
                             isContactless: _isContactless,
                             cardNumber: _imaginaryCardNumberController.text,
                             cardholderName: _nameOnCardController.text,
-                            cardExpDate:
-                                "${monthsMap[_selectedMonth]}/$_selectedYear",
+                            cardExpDate: "$_selectedMonth/$_selectedYear",
                           ),
                           SizedBox(height: 12.h),
                           Row(
@@ -762,16 +833,30 @@ class _DebitCardState extends State<DebitCard> {
                                       _isSaving = true;
                                     });
 
-                                    await _cardController.addCard(
-                                      title: _cardTitleController.text,
-                                      name: _nameOnCardController.text,
-                                      no: _imaginaryCardNumberController.text,
-                                      type: _cardTypeValue,
-                                      contactless: _isContactless,
-                                      expDate:
-                                          "${monthsMap[_selectedMonth]}/$_selectedYear",
-                                      color: colors[_cardColor],
-                                    );
+                                    if (_selectedId.isEmpty) {
+                                      await _cardController.addCard(
+                                        title: _cardTitleController.text,
+                                        name: _nameOnCardController.text,
+                                        no: _imaginaryCardNumberController.text,
+                                        type: _cardTypeValue,
+                                        contactless: _isContactless,
+                                        expDate:
+                                            "$_selectedMonth/$_selectedYear",
+                                        color: colors[_cardColor],
+                                      );
+                                    } else {
+                                      await _cardController.updateCard(
+                                        id: _selectedId,
+                                        title: _cardTitleController.text,
+                                        name: _nameOnCardController.text,
+                                        no: _imaginaryCardNumberController.text,
+                                        type: _cardTypeValue,
+                                        contactless: _isContactless,
+                                        expDate:
+                                            "$_selectedMonth/$_selectedYear",
+                                        color: colors[_cardColor],
+                                      );
+                                    }
 
                                     setState(() {
                                       _isSaving = false;
@@ -810,7 +895,9 @@ class _DebitCardState extends State<DebitCard> {
                             child: _isSaving
                                 ? const CircularProgressIndicator()
                                 : ReusableText(
-                                    text: "Save Card",
+                                    text: _selectedId.isEmpty
+                                        ? "Save Card"
+                                        : "Update Card",
                                     color: Colors.white,
                                     fontSize: 14.sp,
                                     fontWeight: FontWeight.w600,
@@ -826,6 +913,20 @@ class _DebitCardState extends State<DebitCard> {
             ),
           );
         }),
+      ),
+    ).then(
+      (value) => setState(
+        () {
+          _selectedId = "";
+          _cardColor = 0;
+          _isContactless = false;
+          _cardTitleController.text = "";
+          _nameOnCardController.text = "";
+          _imaginaryCardNumberController.text = "";
+          _cardTypeValue = "mastercard";
+          _selectedMonth = _months[DateTime.now().month - 1];
+          _selectedYear = DateTime.now().year;
+        },
       ),
     );
   }

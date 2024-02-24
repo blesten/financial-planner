@@ -84,8 +84,8 @@ const cardController = {
     if (type !== 'mastercard' && type !== 'visa')
       return res.status(400).json({ msg: 'Please provide valid card type.' })
 
-    if (color !== 'red' || color !== 'blue' || color !== 'orange' || color !== 'green' || color !== 'purple')
-      return res.status(400).json({ msg: 'Please provid valid card color' })
+    if (color !== 'red' && color !== 'blue' && color !== 'orange' && color !== 'green' && color !== 'purple')
+      return res.status(400).json({ msg: 'Please provide valid card color' })
     
     try {
       const card = await Card.findById(id)

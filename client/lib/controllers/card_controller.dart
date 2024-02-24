@@ -87,6 +87,69 @@ class CardController extends GetxController {
     }
   }
 
+  Future<void> updateCard({
+    required String id,
+    required String title,
+    required String name,
+    required String no,
+    required String type,
+    required bool contactless,
+    required String expDate,
+    required String color,
+  }) async {
+    _error.value = "";
+
+    try {
+      final response = await http.patch(
+        Uri.parse("$serverURL/api/v1/cards/$id"),
+        body: {
+          "title": title,
+          "name": name,
+          "no": no,
+          "type": type,
+          "contactless": contactless ? "true" : "false",
+          "expDate": expDate,
+          "color": color,
+        },
+        headers: {"Authorization": _userController.accessToken},
+      );
+
+      if (response.statusCode == 200) {
+        CardModel corrCard = _cards.firstWhere((element) => element.id == id);
+        corrCard.title = title;
+        corrCard.name = name;
+        corrCard.no = no;
+        corrCard.type = type;
+        corrCard.contactless = contactless;
+        corrCard.expDate = expDate;
+        corrCard.color = color;
+      } else {
+        _error.value = json.decode(response.body)['msg'];
+      }
+    } catch (err) {
+      _error.value = err.toString();
+    }
+  }
+
+  Future<void> deleteCard({required String id}) async {
+    _error.value = "";
+
+    try {
+      final response = await http.delete(
+        Uri.parse("$serverURL/api/v1/cards/$id"),
+        headers: {"Authorization": _userController.accessToken},
+      );
+
+      if (response.statusCode == 200) {
+        _cards.removeWhere((element) => element.id == id);
+      } else {
+        _error.value = json.decode(response.body)['msg'];
+      }
+    } catch (err) {
+      _error.value = err.toString();
+    }
+  }
+
   String get error => _error.value;
 
   bool get loading => _loading.value;
