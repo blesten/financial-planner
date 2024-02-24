@@ -1,3 +1,4 @@
+import 'package:financial_planner/controllers/user_controller.dart';
 import 'package:financial_planner/screens/login/login_phone.dart';
 import 'package:financial_planner/screens/main_screen.dart';
 import 'package:financial_planner/utils/constants.dart';
@@ -19,6 +20,8 @@ class LoginPin extends StatefulWidget {
 }
 
 class _LoginPinState extends State<LoginPin> {
+  final UserController _userController = Get.put(UserController());
+
   final _firstDigitController = TextEditingController();
   final _secondDigitController = TextEditingController();
   final _thirdDigitController = TextEditingController();
@@ -33,7 +36,7 @@ class _LoginPinState extends State<LoginPin> {
   bool _isLoading = false;
   String _handphoneNo = "";
 
-  Future<void> login(String handphoneNo, String pin) async {
+  Future<Map<String, dynamic>> login(String handphoneNo, String pin) async {
     setState(() {
       _isLoading = true;
       _error = "";
@@ -53,16 +56,20 @@ class _LoginPinState extends State<LoginPin> {
         setState(() {
           _error = json.decode(response.body)['msg'];
         });
+        return {};
       }
+
+      return json.decode(response.body);
     } catch (err) {
       setState(() {
         _error = err.toString();
       });
+      return {};
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
     }
-
-    setState(() {
-      _isLoading = false;
-    });
   }
 
   Future<void> _setIsRegisteredStatus() async {
@@ -337,10 +344,22 @@ class _LoginPinState extends State<LoginPin> {
                               _fourthDigitController.text
                             ].join('');
 
-                            await login(_handphoneNo, pin);
+                            Map<String, dynamic> loginResponse =
+                                await login(_handphoneNo, pin);
 
                             if (_error.isEmpty) {
                               _setIsRegisteredStatus();
+
+                              _userController.setUser(
+                                id: loginResponse['user']['_id'],
+                                name: loginResponse['user']['name'],
+                                email: loginResponse['user']['email'],
+                                handphoneNo: loginResponse['user']
+                                    ['handphoneNo'],
+                              );
+
+                              _userController
+                                  .setAccessToken(loginResponse['accessToken']);
 
                               Get.to(
                                 () => MainScreen(),

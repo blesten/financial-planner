@@ -21,7 +21,7 @@ const cardController = {
     if (type !== 'mastercard' && type !== 'visa')
       return res.status(400).json({ msg: 'Please provide valid card type.' })
 
-    if (color !== 'red' || color !== 'blue' || color !== 'orange' || color !== 'green' || color !== 'purple')
+    if (color !== 'red' && color !== 'blue' && color !== 'orange' && color !== 'green' && color !== 'purple')
       return res.status(400).json({ msg: 'Please provid valid card color' })
 
     try {
@@ -55,12 +55,12 @@ const cardController = {
   },
   read: async(req: IReqUser, res: Response) => {
     try {
-      const cards = await Card.find({ user: req.user?._id })
+      const cards = await Card.find({ user: req.user?._id }).sort({ createdAt: -1 })
       
       if (cards.length < 1)
         return res.status(204).json({ msg: 'No cards found.' })
 
-      return cards
+      return res.status(200).json({ cards })
     } catch (error: any) {
       return res.status(500).json({ msg: error.message })
     }

@@ -1,3 +1,5 @@
+import 'package:financial_planner/controllers/user_controller.dart';
+import 'package:financial_planner/screens/login/login_phone.dart';
 import 'package:financial_planner/screens/profile/change_pin.dart';
 import 'package:financial_planner/utils/constants.dart';
 import 'package:financial_planner/widgets/general/reusable_text.dart';
@@ -5,13 +7,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Profile extends StatelessWidget {
+  final UserController _userController = Get.put(UserController());
+
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _phoneNumberController = TextEditingController();
 
   Profile({super.key});
+
+  Future<void> _removeHandphoneNo() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.remove("budget_buddy_no");
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -221,7 +231,19 @@ class Profile extends StatelessWidget {
                     backgroundColor: Colors.red.shade500,
                     side: BorderSide.none,
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    _userController.clearUser();
+                    _userController.clearAccessToken();
+                    _removeHandphoneNo();
+
+                    Get.to(
+                      const LoginPhone(),
+                      transition: Transition.fadeIn,
+                      duration: const Duration(
+                        milliseconds: 150,
+                      ),
+                    );
+                  },
                   child: ReusableText(
                     text: 'Sign Out',
                     color: Colors.white,

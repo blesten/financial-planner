@@ -28,7 +28,7 @@ class MainScreen extends StatelessWidget {
         child: Scaffold(
           appBar: PreferredSize(
             preferredSize: Size.fromHeight(100.h),
-            child: const CustomAppBar(),
+            child: CustomAppBar(),
           ),
           body: screen[_bottomNavController.currentIndex],
           bottomNavigationBar: const BottomNavBar(),

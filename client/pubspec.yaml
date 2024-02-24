@@ -85,6 +85,7 @@ flutter:
     - assets/icons/visa.png
     - assets/icons/chip.png
     - assets/icons/contactless.png
+    - assets/icons/empty_card.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

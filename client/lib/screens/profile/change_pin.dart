@@ -14,7 +14,7 @@ class ChangePin extends StatelessWidget {
       child: Scaffold(
         appBar: PreferredSize(
           preferredSize: Size.fromHeight(100.h),
-          child: const CustomAppBar(),
+          child: CustomAppBar(),
         ),
         body: Padding(
           padding: EdgeInsets.symmetric(horizontal: 20.w),

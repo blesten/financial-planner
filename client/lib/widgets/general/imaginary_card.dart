@@ -67,7 +67,9 @@ class ImaginaryCard extends StatelessWidget {
               ),
               SizedBox(height: 15.h),
               Text(
-                cardNumber,
+                cardNumber.length != 16
+                    ? ""
+                    : "${cardNumber.substring(0, 4)} ${cardNumber.substring(4, 8)} ${cardNumber.substring(8, 12)} ${cardNumber.substring(12)}",
                 style: GoogleFonts.firaCode(
                   color: Colors.white,
                   fontWeight: FontWeight.w600,
@@ -79,7 +81,7 @@ class ImaginaryCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    cardholderName,
+                    cardholderName.toUpperCase(),
                     style: GoogleFonts.firaCode(
                       color: Colors.white,
                       fontWeight: FontWeight.w600,
