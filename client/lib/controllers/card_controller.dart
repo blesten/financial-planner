@@ -1,3 +1,4 @@
+import 'package:financial_planner/controllers/home_controller.dart';
 import 'package:financial_planner/controllers/user_controller.dart';
 import 'package:financial_planner/models/card_model.dart';
 import 'package:financial_planner/utils/constants.dart';
@@ -7,6 +8,7 @@ import 'dart:convert';
 
 class CardController extends GetxController {
   final UserController _userController = Get.find<UserController>();
+  final HomeController _homeController = Get.find<HomeController>();
 
   final RxList<CardModel> _cards = <CardModel>[].obs;
   final RxString _error = "".obs;
@@ -78,6 +80,8 @@ class CardController extends GetxController {
             color: card['color'],
           ),
         );
+
+        _homeController.fetchCards();
       } else {
         _error.value = json.decode(response.body)['msg'];
       }
