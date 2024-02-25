@@ -13,7 +13,7 @@ class UserNotification extends StatelessWidget {
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(100.h),
-        child: CustomAppBar(),
+        child: const CustomAppBar(),
       ),
       body: Padding(
         padding: EdgeInsets.only(left: 20.w, right: 20.w, bottom: 20.h),

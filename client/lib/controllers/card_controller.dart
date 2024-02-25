@@ -12,7 +12,7 @@ class CardController extends GetxController {
   final RxString _error = "".obs;
   final RxBool _loading = false.obs;
 
-  Future<List<CardModel>> fetchCards() async {
+  Future<void> fetchCards() async {
     try {
       _loading.value = true;
 
@@ -24,7 +24,6 @@ class CardController extends GetxController {
       if (response.statusCode == 200) {
         final List<dynamic> data = json.decode(response.body)['cards'];
         _cards.value = data.map((json) => CardModel.fromJson(json)).toList();
-        return cards;
       } else {
         _error.value = json.decode(response.body)['msg'];
         throw Exception("Failed to fetch cards");
@@ -154,5 +153,5 @@ class CardController extends GetxController {
 
   bool get loading => _loading.value;
 
-  List<CardModel> get cards => _cards.value;
+  List<CardModel> get cards => _cards;
 }

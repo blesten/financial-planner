@@ -1,4 +1,5 @@
 import 'package:financial_planner/utils/constants.dart';
+import 'package:financial_planner/utils/formatter.dart';
 import 'package:financial_planner/widgets/general/reusable_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -7,12 +8,14 @@ class TransactionCard extends StatelessWidget {
   final String price;
   final String date;
   final String transactionType;
+  final String? expenseCategory;
 
   const TransactionCard({
     super.key,
     required this.price,
     required this.date,
     required this.transactionType,
+    this.expenseCategory,
   });
 
   @override
@@ -34,24 +37,23 @@ class TransactionCard extends StatelessWidget {
         children: [
           Row(
             children: [
-              Icon(
-                Icons.food_bank,
-                size: 50.sp,
-                color: Colors.orange,
+              Image.asset(
+                "assets/icons/${expenseCategory == "food" ? "food" : expenseCategory == "snack" ? "snack" : expenseCategory == "transportation" ? "transportation" : expenseCategory == "selfReward" ? "self_reward" : expenseCategory == "monthlyNeeds" ? "monthly_needs" : "${transactionType.substring(0, 1).toLowerCase()}${transactionType.substring(1)}"}.png",
+                width: 40.w,
               ),
               SizedBox(width: 10.w),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   ReusableText(
-                    text: price,
+                    text: formatToIDR(double.parse(price)),
                     fontSize: 16.sp,
                     color: Colors.black,
                     fontWeight: FontWeight.w600,
                   ),
                   SizedBox(height: 8.h),
                   ReusableText(
-                    text: date,
+                    text: formatDate(date),
                     fontSize: 12.sp,
                     color: Colors.grey.shade600,
                     fontWeight: FontWeight.w500,
@@ -63,11 +65,17 @@ class TransactionCard extends StatelessWidget {
           Container(
             padding: EdgeInsets.all(10.h),
             decoration: BoxDecoration(
-              color: Colors.red.shade500,
+              color: transactionType == "income"
+                  ? const Color(0xFF31D337)
+                  : transactionType == 'investment' ||
+                          transactionType == 'saving'
+                      ? const Color(0xFF4D8AFF)
+                      : Colors.red.shade500,
               borderRadius: BorderRadius.circular(6.r),
             ),
             child: ReusableText(
-              text: transactionType,
+              text:
+                  "${transactionType.substring(0, 1).toUpperCase()}${transactionType.substring(1)}",
               fontSize: 10.sp,
               color: Colors.white,
               fontWeight: FontWeight.w600,

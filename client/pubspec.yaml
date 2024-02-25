@@ -41,6 +41,8 @@ dependencies:
   get: ^4.6.6
   shared_preferences: ^2.2.2
   fl_chart: ^0.66.2
+  http: ^1.2.0
+  intl: ^0.19.0
 
 dev_dependencies:
   flutter_test:
@@ -86,6 +88,14 @@ flutter:
     - assets/icons/chip.png
     - assets/icons/contactless.png
     - assets/icons/empty_card.png
+    - assets/icons/food.png
+    - assets/icons/income.png
+    - assets/icons/investment.png
+    - assets/icons/monthly_needs.png
+    - assets/icons/saving.png
+    - assets/icons/self_reward.png
+    - assets/icons/snack.png
+    - assets/icons/transportation.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

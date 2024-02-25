@@ -16,7 +16,7 @@ const transactionController = {
     if (!cardId || !transactionCategory || !amount)
       return res.status(400).json({ msg: 'Please provide required field.' })
 
-    if (transactionCategory !== 'income' && transactionCategory !== 'investment' || transactionCategory !== 'saving' || transactionCategory !== 'expense')
+    if (transactionCategory !== 'income' && transactionCategory !== 'investment' && transactionCategory !== 'saving' && transactionCategory !== 'expense')
       return res.status(400).json({ msg: 'Please provide valid transaction category.' })
 
     if (transactionCategory === 'expense' && !expenseCategory)
@@ -49,9 +49,12 @@ const transactionController = {
   },
   read: async(req: IReqUser, res: Response) => {
     const { id } = req.params
+    const currentDate = new Date();
+    const firstDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
+    const lastDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
 
     try {
-      const transactions = await Transaction.find({ user: req.user?._id, card: id }).sort({ createdAt: -1 })
+      const transactions = await Transaction.find({ user: req.user?._id, card: id, createdAt: { $gte: firstDayOfMonth, $lte: lastDayOfMonth } }).sort({ createdAt: -1 })
 
       if (transactions.length === 0)
         return res.status(204).json({ msg: 'Transactions is empty.' })
@@ -63,12 +66,12 @@ const transactionController = {
   },
   readRecent: async(req: IReqUser, res: Response) => {
     const { id } = req.params
+    const currentDate = new Date();
+    const firstDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
+    const lastDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
 
     try {
-      const transactions = await Transaction.find({ user: req.user?._id, card: id }).sort({ createdAt: -1 }).limit(5)
-
-      if (transactions.length === 0)
-        return res.status(204).json({ msg: 'Transactions is empty.' })
+      const transactions = await Transaction.find({ user: req.user?._id, card: id, createdAt: { $gte: firstDayOfMonth, $lte: lastDayOfMonth } }).sort({ createdAt: -1 }).limit(5)
 
       return res.status(200).json({ transactions })
     } catch (error: any) {
@@ -77,6 +80,9 @@ const transactionController = {
   },
   summarize: async(req: IReqUser, res: Response) => {
     const { id } = req.params
+    const currentDate = new Date();
+    const firstDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
+    const lastDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
 
     try {
       const incomeAggregation = await Transaction.aggregate([
@@ -84,7 +90,11 @@ const transactionController = {
           $match: {
             user: new mongoose.Types.ObjectId(req.user?._id),
             card: new mongoose.Types.ObjectId(id),
-            transactionCategory: 'income'
+            transactionCategory: 'income',
+            createdAt: {
+              $gte: firstDayOfMonth,
+              $lte: lastDayOfMonth
+            }
           }
         },
         {
@@ -100,7 +110,11 @@ const transactionController = {
           $match: {
             user: new mongoose.Types.ObjectId(req.user?._id),
             card: new mongoose.Types.ObjectId(id),
-            transactionCategory: 'investment'
+            transactionCategory: 'investment',
+            createdAt: {
+              $gte: firstDayOfMonth,
+              $lte: lastDayOfMonth
+            }
           }
         },
         {
@@ -116,7 +130,11 @@ const transactionController = {
           $match: {
             user: new mongoose.Types.ObjectId(req.user?._id),
             card: new mongoose.Types.ObjectId(id),
-            transactionCategory: 'saving'
+            transactionCategory: 'saving',
+            createdAt: {
+              $gte: firstDayOfMonth,
+              $lte: lastDayOfMonth
+            }
           }
         },
         {
@@ -132,7 +150,11 @@ const transactionController = {
           $match: {
             user: new mongoose.Types.ObjectId(req.user?._id),
             card: new mongoose.Types.ObjectId(id),
-            transactionCategory: 'expense'
+            transactionCategory: 'expense',
+            createdAt: {
+              $gte: firstDayOfMonth,
+              $lte: lastDayOfMonth
+            }
           }
         },
         {

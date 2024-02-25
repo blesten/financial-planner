@@ -33,43 +33,43 @@ class AllTransaction extends StatelessWidget {
                 child: SingleChildScrollView(
                   child: Column(
                     children: [
-                      const TransactionCard(
+                      TransactionCard(
                         price: "IDR 15.000,00",
                         date: "23 February 2024",
                         transactionType: "Expense",
                       ),
                       SizedBox(height: 20.h),
-                      const TransactionCard(
+                      TransactionCard(
                         price: "IDR 15.000,00",
                         date: "23 February 2024",
                         transactionType: "Expense",
                       ),
                       SizedBox(height: 20.h),
-                      const TransactionCard(
+                      TransactionCard(
                         price: "IDR 15.000,00",
                         date: "23 February 2024",
                         transactionType: "Expense",
                       ),
                       SizedBox(height: 20.h),
-                      const TransactionCard(
+                      TransactionCard(
                         price: "IDR 15.000,00",
                         date: "23 February 2024",
                         transactionType: "Expense",
                       ),
                       SizedBox(height: 20.h),
-                      const TransactionCard(
+                      TransactionCard(
                         price: "IDR 15.000,00",
                         date: "23 February 2024",
                         transactionType: "Expense",
                       ),
                       SizedBox(height: 20.h),
-                      const TransactionCard(
+                      TransactionCard(
                         price: "IDR 15.000,00",
                         date: "23 February 2024",
                         transactionType: "Expense",
                       ),
                       SizedBox(height: 20.h),
-                      const TransactionCard(
+                      TransactionCard(
                         price: "IDR 15.000,00",
                         date: "23 February 2024",
                         transactionType: "Expense",

@@ -2,7 +2,6 @@ import 'package:financial_planner/controllers/register_controller.dart';
 import 'package:financial_planner/screens/login/login.dart';
 import 'package:financial_planner/utils/constants.dart';
 import 'package:financial_planner/widgets/general/reusable_text.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';

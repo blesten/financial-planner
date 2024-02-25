@@ -56,9 +56,6 @@ const cardController = {
   read: async(req: IReqUser, res: Response) => {
     try {
       const cards = await Card.find({ user: req.user?._id }).sort({ createdAt: -1 })
-      
-      if (cards.length < 1)
-        return res.status(204).json({ msg: 'No cards found.' })
 
       return res.status(200).json({ cards })
     } catch (error: any) {

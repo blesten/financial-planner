@@ -1,10 +1,10 @@
 import 'package:get/get.dart';
 
 class RegisterController extends GetxController {
-  RxInt _currentStep = 0.obs;
-  RxString _phoneNumber = "".obs;
-  List<RxInt> _otp = List.generate(4, (index) => 0.obs);
-  List<RxInt> _pin = List.generate(4, (index) => 0.obs);
+  final RxInt _currentStep = 0.obs;
+  final RxString _phoneNumber = "".obs;
+  final List<RxInt> _otp = List.generate(4, (index) => 0.obs);
+  final List<RxInt> _pin = List.generate(4, (index) => 0.obs);
 
   int get currentStep => _currentStep.value;
   String get phoneNumber => _phoneNumber.value;

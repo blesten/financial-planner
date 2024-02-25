@@ -5,9 +5,9 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class UserController extends GetxController {
-  RxString _accessToken = "".obs;
-  Rx<UserModel?> _user = Rx<UserModel?>(null);
-  RxString _error = "".obs;
+  final RxString _accessToken = "".obs;
+  final Rx<UserModel?> _user = Rx<UserModel?>(null);
+  final RxString _error = "".obs;
 
   void setUser({
     required String id,

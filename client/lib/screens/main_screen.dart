@@ -13,7 +13,7 @@ class MainScreen extends StatelessWidget {
   final _bottomNavController = Get.put(BottomNavController());
 
   final List<Widget> screen = [
-    Home(),
+    const Home(),
     const DebitCard(),
     const Report(),
     Profile(),

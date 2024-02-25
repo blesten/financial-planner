@@ -21,7 +21,8 @@ const transactionSchema = new mongoose.Schema<ITransaction>({
   },
   expenseCategory: {
     type: String,
-    enum: ['food', 'snack', 'selfReward', 'monthlyNeeds', 'transportation']
+    default: '',
+    enum: ['food', 'snack', 'selfReward', 'monthlyNeeds', 'transportation', '']
   }
 }, {
   timestamps: true
