@@ -83,10 +83,17 @@ class _HomeState extends State<Home> {
                           CarouselSlider.builder(
                             carouselController: _carouselController,
                             options: CarouselOptions(
-                              enableInfiniteScroll: false,
-                              viewportFraction: 1,
-                              height: 220,
-                            ),
+                                enableInfiniteScroll: false,
+                                viewportFraction: 1,
+                                height: 220,
+                                onPageChanged: (index, reason) {
+                                  _homeController.currentCarousel =
+                                      _homeController.cards[index].id;
+                                  _homeController.fetchTransactionOverview(
+                                      _homeController.cards[index].id);
+                                  _homeController.fetchRecentTransactions(
+                                      _homeController.cards[index].id);
+                                }),
                             itemCount: _homeController.cards.length,
                             itemBuilder: (context, index, pageViewIndex) {
                               return Column(

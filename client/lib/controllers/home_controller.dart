@@ -24,6 +24,8 @@ class HomeController extends GetxController {
   final RxString _overviewError = "".obs;
   final RxBool _overviewLoading = false.obs;
 
+  final RxString _currentCarousel = "".obs;
+
   Future<void> fetchCards() async {
     try {
       _cardLoading.value = true;
@@ -149,6 +151,10 @@ class HomeController extends GetxController {
     }
   }
 
+  set currentCarousel(String value) {
+    _currentCarousel.value = value;
+  }
+
   List<CardModel> get cards => _cards;
 
   List<TransactionModel> get recentTransactions => _recentTransactions;
@@ -168,4 +174,6 @@ class HomeController extends GetxController {
   double get saving => _saving.value;
 
   double get investment => _investment.value;
+
+  String get currentCarousel => _currentCarousel.value;
 }
