@@ -470,12 +470,16 @@ class _BottomNavBarState extends State<BottomNavBar> {
                                         setState(() {
                                           _isSaving = false;
                                         });
-                                        _homeController
-                                            .fetchTransactionOverview(
-                                                _homeController
-                                                    .currentCarousel);
-                                        _homeController.fetchRecentTransactions(
-                                            _homeController.currentCarousel);
+                                        if (_homeController.cards.length > 1) {
+                                          _homeController
+                                              .fetchTransactionOverview(
+                                                  _homeController
+                                                      .currentCarousel);
+                                          _homeController
+                                              .fetchRecentTransactions(
+                                                  _homeController
+                                                      .currentCarousel);
+                                        }
                                         Navigator.of(context).pop();
                                         showDialog(
                                           context: context,

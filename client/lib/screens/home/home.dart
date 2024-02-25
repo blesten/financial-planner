@@ -22,9 +22,12 @@ class _HomeState extends State<Home> {
 
   final CarouselController _carouselController = CarouselController();
 
+  String _currentCard = "";
+
   Future<void> initializeData() async {
     await _homeController.fetchCards();
     if (_homeController.cards.isNotEmpty) {
+      _currentCard = _homeController.cards[0].id;
       await _homeController
           .fetchRecentTransactions(_homeController.cards[0].id);
       await _homeController
@@ -87,6 +90,10 @@ class _HomeState extends State<Home> {
                                 viewportFraction: 1,
                                 height: 220,
                                 onPageChanged: (index, reason) {
+                                  setState(() {
+                                    _currentCard =
+                                        _homeController.cards[index].id;
+                                  });
                                   _homeController.currentCarousel =
                                       _homeController.cards[index].id;
                                   _homeController.fetchTransactionOverview(
@@ -471,7 +478,10 @@ class _HomeState extends State<Home> {
                                                         onTap: () {
                                                           Get.to(
                                                             () =>
-                                                                const AllTransaction(),
+                                                                AllTransaction(
+                                                              cardId:
+                                                                  _currentCard,
+                                                            ),
                                                             transition:
                                                                 Transition
                                                                     .rightToLeft,
