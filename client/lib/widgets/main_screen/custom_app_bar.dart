@@ -98,7 +98,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
             GestureDetector(
               onTap: () {
                 Get.to(
-                  () => const UserNotification(),
+                  () => UserNotification(),
                   transition: Transition.rightToLeft,
                   duration: const Duration(
                     milliseconds: 150,

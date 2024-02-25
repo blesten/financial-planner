@@ -6,7 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class UserNotification extends StatelessWidget {
-  const UserNotification({super.key});
+  final List<dynamic> notifications = [];
+
+  UserNotification({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -17,129 +19,153 @@ class UserNotification extends StatelessWidget {
       ),
       body: Padding(
         padding: EdgeInsets.only(left: 20.w, right: 20.w, bottom: 20.h),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            GestureDetector(
-              onTap: () {
-                Navigator.pop(context);
-              },
-              child: const Icon(CupertinoIcons.back),
-            ),
-            SizedBox(height: 25.h),
-            Expanded(
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    Container(
-                      padding: EdgeInsets.symmetric(
-                          horizontal: 15.w, vertical: 18.h),
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color: Colors.grey.shade300,
-                          style: BorderStyle.solid,
-                          width: 1,
-                        ),
-                        borderRadius: BorderRadius.circular(8.r),
+        child: notifications.isEmpty
+            ? Expanded(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 15.w),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.asset("assets/icons/empty_notification.png"),
+                      SizedBox(height: 30.h),
+                      ReusableText(
+                        text:
+                            "Oops, it seems like you don't have any notification yet",
+                        fontSize: 17.sp,
+                        color: Colors.grey.shade500,
+                        fontWeight: FontWeight.w600,
+                        textAlign: TextAlign.center,
+                        height: 1.8.h,
                       ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            children: [
-                              ReusableText(
-                                text: "Notification Title Goes Here",
-                                fontSize: 14.sp,
-                                color: kPrimary,
-                                fontWeight: FontWeight.w600,
-                              ),
-                              SizedBox(width: 10.w),
-                              Container(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 7.h, vertical: 5.h),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(6.r),
-                                  color: kPrimary,
-                                ),
-                                child: ReusableText(
-                                  text: "New",
-                                  fontSize: 11.sp,
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(height: 12.h),
-                          ReusableText(
-                            text:
-                                "Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet.",
-                            fontSize: 12.sp,
-                            color: Colors.grey.shade400,
-                            fontWeight: FontWeight.w500,
-                            height: 1.7,
-                          ),
-                        ],
-                      ),
-                    ),
-                    SizedBox(height: 25.h),
-                    Container(
-                      padding: EdgeInsets.symmetric(
-                          horizontal: 15.w, vertical: 18.h),
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color: Colors.grey.shade300,
-                          style: BorderStyle.solid,
-                          width: 1,
-                        ),
-                        borderRadius: BorderRadius.circular(8.r),
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            children: [
-                              ReusableText(
-                                text: "Notification Title Goes Here",
-                                fontSize: 14.sp,
-                                color: kPrimary,
-                                fontWeight: FontWeight.w600,
-                              ),
-                              SizedBox(width: 10.w),
-                              Container(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 7.h, vertical: 5.h),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(6.r),
-                                  color: kPrimary,
-                                ),
-                                child: ReusableText(
-                                  text: "New",
-                                  fontSize: 11.sp,
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(height: 12.h),
-                          ReusableText(
-                            text:
-                                "Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet.",
-                            fontSize: 12.sp,
-                            color: Colors.grey.shade400,
-                            fontWeight: FontWeight.w500,
-                            height: 1.7,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
+              )
+            : Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                    child: const Icon(CupertinoIcons.back),
+                  ),
+                  SizedBox(height: 25.h),
+                  Expanded(
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          Container(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 15.w, vertical: 18.h),
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                color: Colors.grey.shade300,
+                                style: BorderStyle.solid,
+                                width: 1,
+                              ),
+                              borderRadius: BorderRadius.circular(8.r),
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  children: [
+                                    ReusableText(
+                                      text: "Notification Title Goes Here",
+                                      fontSize: 14.sp,
+                                      color: kPrimary,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                    SizedBox(width: 10.w),
+                                    Container(
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: 7.h, vertical: 5.h),
+                                      decoration: BoxDecoration(
+                                        borderRadius:
+                                            BorderRadius.circular(6.r),
+                                        color: kPrimary,
+                                      ),
+                                      child: ReusableText(
+                                        text: "New",
+                                        fontSize: 11.sp,
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(height: 12.h),
+                                ReusableText(
+                                  text:
+                                      "Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet.",
+                                  fontSize: 12.sp,
+                                  color: Colors.grey.shade400,
+                                  fontWeight: FontWeight.w500,
+                                  height: 1.7,
+                                ),
+                              ],
+                            ),
+                          ),
+                          SizedBox(height: 25.h),
+                          Container(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 15.w, vertical: 18.h),
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                color: Colors.grey.shade300,
+                                style: BorderStyle.solid,
+                                width: 1,
+                              ),
+                              borderRadius: BorderRadius.circular(8.r),
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  children: [
+                                    ReusableText(
+                                      text: "Notification Title Goes Here",
+                                      fontSize: 14.sp,
+                                      color: kPrimary,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                    SizedBox(width: 10.w),
+                                    Container(
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: 7.h, vertical: 5.h),
+                                      decoration: BoxDecoration(
+                                        borderRadius:
+                                            BorderRadius.circular(6.r),
+                                        color: kPrimary,
+                                      ),
+                                      child: ReusableText(
+                                        text: "New",
+                                        fontSize: 11.sp,
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(height: 12.h),
+                                ReusableText(
+                                  text:
+                                      "Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet.",
+                                  fontSize: 12.sp,
+                                  color: Colors.grey.shade400,
+                                  fontWeight: FontWeight.w500,
+                                  height: 1.7,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
               ),
-            ),
-          ],
-        ),
       ),
     );
   }

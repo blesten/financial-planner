@@ -27,6 +27,7 @@ class _HomeState extends State<Home> {
   Future<void> initializeData() async {
     await _homeController.fetchCards();
     if (_homeController.cards.isNotEmpty) {
+      _homeController.currentCarousel = _homeController.cards[0].id;
       _currentCard = _homeController.cards[0].id;
       await _homeController
           .fetchRecentTransactions(_homeController.cards[0].id);

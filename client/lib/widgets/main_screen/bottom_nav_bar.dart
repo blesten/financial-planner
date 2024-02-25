@@ -504,7 +504,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
                               child: _isSaving
                                   ? const CircularProgressIndicator()
                                   : ReusableText(
-                                      text: 'Save Card',
+                                      text: 'Add Transaction',
                                       color: Colors.white,
                                       fontSize: 14.sp,
                                       fontWeight: FontWeight.w600,
