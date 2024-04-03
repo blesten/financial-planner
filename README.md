@@ -20,7 +20,7 @@
     <a href="https://github.com/blesten/financial-planner"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="https://github.com/blesten/financial-planner">View Demo</a>
+    <a href="https://youtu.be/l8LGt690G04">View Demo</a>
     ·
     <a href="https://github.com/blesten/financial-planner/issues">Report Bug</a>
     ·
